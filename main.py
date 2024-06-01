@@ -21,7 +21,7 @@ class descriptionOfACompany(BaseModel):
     name: str
     website: str
     summary: str
-    feature: list[str]
+    features: list[str]
     uniqueVisitor: int
     # rank: str {high, medium, low}
     # select: bool
@@ -38,15 +38,6 @@ class endResult(BaseModel):
     # featuresSelected: rankFeatureList
     # competitorSelected: rankCompetitorList
     endResult: rankCompetitorList
-
-    def __init__(self, search, featuresSelected, competitorSelected, endResult):
-        self.search = search
-        self.featuresSelected = featuresSelected
-        self.competitorSelected = competitorSelected
-        self.endResult = endResult
-
-
-
 
 @app.get("/")
 def read_root():
@@ -111,7 +102,7 @@ def filterSearchByFeatures(search: str, summary: str, features: rankFeatureList)
 
 # POST /filter/competitor
 @app.post("/filter/competitor")
-def filterSearchByFeatures(search: str, summary: str, features: rankFeatureList, competitor: rankCompetitorList):
+def filterSearchByCompetitor(search: str, summary: str, features: rankFeatureList, competitor: rankCompetitorList):
 
     return {"Hello": "World"}
 
@@ -121,7 +112,7 @@ def filterSearchByFeatures(search: str, summary: str, features: rankFeatureList,
 
 # /POST /competitor
 @app.post("/competitor")
-def filterSearchByFeatures(search: str):# , features: rankFeatureList, competitor: rankCompetitorList):
+def searchCompetitor(search: str):# , features: rankFeatureList, competitor: rankCompetitorList):
     
 
     # Get oll 
@@ -163,40 +154,3 @@ def filterSearchByFeatures(search: str):# , features: rankFeatureList, competito
     )
 
     return result
-
-"""
-
-    result = endResult(
-        "search": "www.quivr.com",
-        "features": [
-            {
-                "id": 1,
-                "name": "parcha",
-                "website": "www.parcha.com",
-                "summary": "summary of parcha here",
-                "features": ["features1","features2"],
-                "uniqueVisitor": 1000
-            },
-            {
-                "id": 2,
-                "name": "simular",
-                "website": "www.simular.ai/",
-                "summary": "summary of simular here",
-                "features": ["features1","features2"],
-                "uniqueVisitor": 500
-            },
-            {
-                "id": 3,
-                "name": "quivr",
-                "website": "www.quivr.com",
-                "summary": "summary of quivr here",
-                "features": ["features1","features2"],
-                "uniqueVisitor": 1000000
-            },
-            ]
-    )
-
-    return result
-"""
-
-
