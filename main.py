@@ -33,12 +33,6 @@ class rankCompetitorList(BaseModel):
 
 
 
-class endResult(BaseModel):
-    search: str
-    ourCompany: descriptionOfACompany
-    # featuresSelected: rankFeatureList
-    # competitorSelected: rankCompetitorList
-    endResult: rankCompetitorList
 
 @app.get("/")
 def read_root():
@@ -87,7 +81,7 @@ def searchWebsite(search: str):
         }
 
 
-# filter by ranking and select
+# filter by ranking {"High","Medium","Low"} and select True False
 
 # POST /filter/feature
 @app.post("/filter/feature")
@@ -109,7 +103,6 @@ def filterSearchByCompetitor(search: str, summary: str, features: rankFeatureLis
 
 
 
-# filter by ranking {"High","Medium","Low"} and select True False
 
 # /POST /competitor
 @app.post("/competitor")
@@ -140,18 +133,5 @@ def searchCompetitor(search: str):# , features: rankFeatureList, competitor: ran
         )
     ]
 
-    # Define the end result
-    result = endResult(
-        search="www.quivr.com",
-        ourCompany=descriptionOfACompany(
-            id=0,
-            name="quivr",
-            website="www.quivr.com",
-            summary="summary of quivr here",
-            features=["features1", "features2"],
-            uniqueVisitor=1000000
-        ),
-        endResult=rankCompetitorList(competitors=competitors)
-    )
 
-    return result
+    return rankCompetitorList(competitors=competitors)
