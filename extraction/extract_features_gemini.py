@@ -5,6 +5,9 @@ import vertexai
 from vertexai.generative_models import GenerativeModel, Part, FinishReason, Tool
 import vertexai.preview.generative_models as generative_models
 from templates import JSON_TEMPLATE, PROMPT_GEMINI
+import requests
+from bs4 import BeautifulSoup
+
 
 from dotenv import load_dotenv
 
@@ -28,28 +31,33 @@ model = GenerativeModel(
 
 
 def get_one_page(url: str) -> str:
-    loader = AsyncChromiumLoader(url)
-    html = loader.load()
+    # loader = AsyncChromiumLoader(url)
+    # html = loader.load()
 
-    # To string
-    bs_transformer = BeautifulSoupTransformer()
-    docs_transformed = bs_transformer.transform_documents(html)
-    content = docs_transformed[0].page_content
+    # # To string
+    # bs_transformer = BeautifulSoupTransformer()
+    # docs_transformed = bs_transformer.transform_documents(html)
+    # content = docs_transformed[0].page_content
 
+    ##pure beautiful soup
+    response = requests.get(url)
+
+    soup = BeautifulSoup(response.content, "html.parser")
+    text = soup.get_text()
+    content = text
     return content
 
 
-def generate_gemini(url: str):
-    website = get_one_page(url)
-    prompt = PROMPT_GEMINI.format(website)
+def generate_gemini(paragraph: str):
+    prompt = PROMPT_GEMINI.format(paragraph)
     response = model.generate_content(
         [prompt],
         generation_config=generation_config,
         safety_settings=safety_settings,
         stream=False,
     )
-    response = json.loads(response)
-    return response
+
+    return response.text
 
 
 ### Config

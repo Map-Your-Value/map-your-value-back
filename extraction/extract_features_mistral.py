@@ -12,6 +12,7 @@ from urllib.parse import urljoin, urlparse
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 import requests
+import time
 
 load_dotenv()
 
@@ -25,19 +26,20 @@ client = MistralClient(api_key=os.environ["MISTRAL_KEY"])
 
 
 def get_one_page(url: str) -> str:
-    loader = AsyncChromiumLoader([url])
-    html = loader.load()
+    # loader = AsyncChromiumLoader([url])
+    # html = loader.load()
+    start = time.time()
+    # # To string
+    # bs_transformer = BeautifulSoupTransformer()
+    # docs_transformed = bs_transformer.transform_documents(html)
+    # content = docs_transformed[0].page_content
+    response = requests.get(url)
 
-    # To string
-    bs_transformer = BeautifulSoupTransformer()
-    docs_transformed = bs_transformer.transform_documents(html)
-    content = docs_transformed[0].page_content
-    # response = requests.get(url)
-
-    # soup = BeautifulSoup(response.content, "html.parser")
-    # text = soup.get_text()
-    # content = text
-
+    soup = BeautifulSoup(response.content, "html.parser")
+    text = soup.get_text()
+    content = text
+    stop = time.time()
+    print(stop - start)
     return content
 
 
@@ -83,9 +85,9 @@ def generate(url: str, one_page: bool = True):
         website = get_one_page(url)
     else:
         website = get_all_pages(url)
+
     prompt = PROMPT_MISTRAL.format(website)
     messages = [ChatMessage(role="user", content=prompt)]
-    print(prompt)
     chat_response = client.chat(
         model=model,
         # response_format={"type": "json_object"},
