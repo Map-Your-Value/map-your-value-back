@@ -35,6 +35,7 @@ class rankCompetitorList(BaseModel):
 
 class endResult(BaseModel):
     search: str
+    ourCompany: descriptionOfACompany
     # featuresSelected: rankFeatureList
     # competitorSelected: rankCompetitorList
     endResult: rankCompetitorList
@@ -136,20 +137,20 @@ def searchCompetitor(search: str):# , features: rankFeatureList, competitor: ran
             summary="summary of simular here",
             features=["features1", "features2"],
             uniqueVisitor=500
-        ),
-        descriptionOfACompany(
-            id=3,
-            name="quivr",
-            website="www.quivr.com",
-            summary="summary of quivr here",
-            features=["features1", "features2"],
-            uniqueVisitor=1000000
         )
     ]
 
     # Define the end result
     result = endResult(
         search="www.quivr.com",
+        ourCompany=descriptionOfACompany(
+            id=0,
+            name="quivr",
+            website="www.quivr.com",
+            summary="summary of quivr here",
+            features=["features1", "features2"],
+            uniqueVisitor=1000000
+        ),
         endResult=rankCompetitorList(competitors=competitors)
     )
 
