@@ -12,6 +12,7 @@ class descriptionOfACompany(BaseModel):
     summary: str
     features: list[str]
     uniqueVisitor: int
+    cost: int
     # rank: str {high, medium, low}
     # select: bool
     # more columns to add here 
@@ -36,7 +37,8 @@ def searchCompetitor(search: str):
             website="www.parcha.com",
             summary="summary of parcha here",
             features=["features1", "features2"],
-            uniqueVisitor=1000
+            uniqueVisitor=1000,
+            cost=1
         ),
         descriptionOfACompany(
             id=2,
@@ -44,7 +46,8 @@ def searchCompetitor(search: str):
             website="www.simular.ai/",
             summary="summary of simular here",
             features=["features1", "features2"],
-            uniqueVisitor=500
+            uniqueVisitor=500,
+            cost=5
         )
     ]
 
