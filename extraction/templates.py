@@ -57,7 +57,7 @@ Can you add a column to explain the proximity score?
 
 Can you add the crunchbase link for each competitor as a short link, in last column
 
-Output the result in JSON format.
+Output the result in the JSON.
 
 Product: {}
 """

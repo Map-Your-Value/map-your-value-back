@@ -100,7 +100,18 @@ def generate(url: str, one_page: bool = True) -> str:
 
 def correct_json(bad_json: str):
     client = MistralClient(api_key=os.environ["MISTRAL_KEY"])
-    prompt = f"""please correct the following json: {bad_json}"""
+    prompt = f"""please correct the following json: {bad_json} 
+            Use the keys:
+            
+                "Competitor": "",
+                "Descriptive_summary": "",
+                "Strengths": "",
+                "Weaknesses": "",
+                "Proximity_score": ,
+                "Proximity_Explanation": "",
+                "Crunchbase_Link": "",
+            
+            """
     messages = [ChatMessage(role="user", content=prompt)]
 
     chat_response = client.chat(

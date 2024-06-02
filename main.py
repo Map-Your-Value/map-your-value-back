@@ -1,21 +1,20 @@
-from typing import Union
 from typing import List
 from fastapi import FastAPI
 from pydantic import BaseModel
+from extraction.chain import analyse_company
 
 app = FastAPI()
 
+
 class descriptionOfACompany(BaseModel):
-    id: int
-    name: str
-    website: str
-    summary: str
-    features: list[str]
-    uniqueVisitor: int
-    cost: int
-    # rank: str {high, medium, low}
-    # select: bool
-    # more columns to add here 
+    Competitor: str
+    Descriptive_summary: str
+    Strengths: List[str] | str
+    Weaknesses: List[str] | str
+    Proximity_score: int
+    Proximity_Explanation: str
+    Crunchbase_Link: str
+
 
 class rankCompetitorList(BaseModel):
     competitors: List[descriptionOfACompany]
@@ -24,32 +23,11 @@ class rankCompetitorList(BaseModel):
 # /POST /competitor
 @app.get("/competitor")
 def searchCompetitor(search: str):
-
-    # Get oll 
-
-    # Define the list of competitors
-    
-
-    competitors = [
-        descriptionOfACompany(
-            id=1,
-            name="parcha",
-            website="www.parcha.com",
-            summary="summary of parcha here",
-            features=["features1", "features2"],
-            uniqueVisitor=1000,
-            cost=1
-        ),
-        descriptionOfACompany(
-            id=2,
-            name="simular",
-            website="www.simular.ai/",
-            summary="summary of simular here",
-            features=["features1", "features2"],
-            uniqueVisitor=500,
-            cost=5
+    out = analyse_company("https://tldv.io/")
+    competitors = []
+    for i in out["competitors"]:
+        competitors.append(
+            descriptionOfACompany.model_validate(i, from_attributes=True, strict=False)
         )
-    ]
-
 
     return rankCompetitorList(competitors=competitors)
