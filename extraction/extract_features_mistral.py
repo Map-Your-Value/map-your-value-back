@@ -28,7 +28,7 @@ client = MistralClient(api_key=os.environ["MISTRAL_KEY"])
 def get_one_page(url: str) -> str:
     # loader = AsyncChromiumLoader([url])
     # html = loader.load()
-    start = time.time()
+
     # # To string
     # bs_transformer = BeautifulSoupTransformer()
     # docs_transformed = bs_transformer.transform_documents(html)
@@ -38,8 +38,7 @@ def get_one_page(url: str) -> str:
     soup = BeautifulSoup(response.content, "html.parser")
     text = soup.get_text()
     content = text
-    stop = time.time()
-    print(stop - start)
+
     return content
 
 
@@ -80,7 +79,7 @@ def get_all_pages(url: str) -> str:
     return all_text
 
 
-def generate(url: str, one_page: bool = True):
+def generate(url: str, one_page: bool = True) -> str:
     if one_page:
         website = get_one_page(url)
     else:
@@ -97,3 +96,18 @@ def generate(url: str, one_page: bool = True):
     response = chat_response.choices[0].message.content
     # response = json.loads(response)
     return response
+
+
+def correct_json(bad_json: str):
+    client = MistralClient(api_key=os.environ["MISTRAL_KEY"])
+    prompt = f"""please correct the following json: {bad_json}"""
+    messages = [ChatMessage(role="user", content=prompt)]
+
+    chat_response = client.chat(
+        model=model,
+        response_format={"type": "json_object"},
+        messages=messages,
+    )
+
+    response = chat_response.choices[0].message.content
+    return json.loads(response)

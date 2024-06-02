@@ -57,6 +57,7 @@ Can you add a column to explain the proximity score?
 
 Can you add the crunchbase link for each competitor as a short link, in last column
 
+Output the result in JSON format.
 
 Product: {}
 """
@@ -65,6 +66,8 @@ Analyse the website that I will give you.
 Create a best resume, adding Marketing insights : unique value proposition, positioning
 Product: features, customizations, integrations, differentiation, platforms, and more.
 Add Pricing approach in the resume (business model, pricing tiers) and audience (users, buyers, target company type, size.
+
+
 
 Website: {}
 """
