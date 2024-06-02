@@ -16,6 +16,7 @@ class descriptionOfACompany(BaseModel):
     Proximity_score: int
     Proximity_Explanation: str
     Crunchbase_Link: str
+    Company_Card: str
 
 
 class rankCompetitorList(BaseModel):
@@ -40,9 +41,19 @@ app.add_middleware(
 def searchCompetitor(search: str):
     out = analyse_company(search)
     competitors = []
+
     for i in out["competitors"]:
-        competitors.append(
-            descriptionOfACompany.model_validate(i, from_attributes=True, strict=False)
-        )
+        i["Company_Card"] = ""
+
+    for i in out["competitors"]:
+        competitors.append(descriptionOfACompany.model_validate(i, from_attributes=True, strict=False))
+
+    for i in competitors:
+        if i.Competitor == "Otter.ai":
+            with open("./extraction/company_fact_card/otter.txt", "r") as f:
+                i.Company_Card = f.read()
+        if i.Competitor == "Zoom IQ":
+            with open("./extraction/company_fact_card/zoom.txt", "r") as f:
+                i.Company_Card = f.read()
 
     return rankCompetitorList(competitors=competitors)

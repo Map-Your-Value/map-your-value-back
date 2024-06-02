@@ -1,38 +1,26 @@
-from langchain_mistralai.chat_models import ChatMistralAI
-from langchain_core.messages import HumanMessage
-
-from langchain_community.document_loaders import AsyncChromiumLoader
-from langchain_community.document_transformers import BeautifulSoupTransformer
 import os
 from mistralai.client import MistralClient
 from mistralai.models.chat_completion import ChatMessage
-from extraction.templates import JSON_TEMPLATE, PROMPT_MISTRAL
+from extraction.templates import PROMPT_MISTRAL
 import json
 from urllib.parse import urljoin, urlparse
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 import requests
-import time
+
 
 load_dotenv()
 
 ## Model init
 
 model = "mistral-large-latest"
-# TODO API KEY
-client = MistralClient(api_key="")
+
+client = MistralClient(api_key=os.environ["MISTRAL_KEY"])
 
 ## Functions
 
 
 def get_one_page(url: str) -> str:
-    # loader = AsyncChromiumLoader([url])
-    # html = loader.load()
-
-    # # To string
-    # bs_transformer = BeautifulSoupTransformer()
-    # docs_transformed = bs_transformer.transform_documents(html)
-    # content = docs_transformed[0].page_content
     response = requests.get(url)
 
     soup = BeautifulSoup(response.content, "html.parser")
@@ -48,10 +36,7 @@ def extract_links(soup, base_url):
         href = a_tag["href"]
         full_url = urljoin(base_url, href)
         # Filter out external links and same page links
-        if (
-            urlparse(full_url).netloc == urlparse(base_url).netloc
-            and full_url != base_url
-        ):
+        if urlparse(full_url).netloc == urlparse(base_url).netloc and full_url != base_url:
             links.add(full_url)
     return links
 
@@ -99,7 +84,6 @@ def generate(url: str, one_page: bool = True) -> str:
 
 
 def correct_json(bad_json: str):
-    client = MistralClient(api_key=os.environ["MISTRAL_KEY"])
     prompt = f"""please correct the following json: {bad_json} 
             Use the keys:
             

@@ -1,10 +1,7 @@
-from langchain_community.document_loaders import AsyncChromiumLoader
-from langchain_community.document_transformers import BeautifulSoupTransformer
-import json
 import vertexai
-from vertexai.generative_models import GenerativeModel, Part, FinishReason, Tool
+from vertexai.generative_models import GenerativeModel, Tool
 import vertexai.preview.generative_models as generative_models
-from extraction.templates import JSON_TEMPLATE, PROMPT_GEMINI
+from extraction.templates import PROMPT_GEMINI
 import requests
 from bs4 import BeautifulSoup
 
@@ -31,14 +28,6 @@ model = GenerativeModel(
 
 
 def get_one_page(url: str) -> str:
-    # loader = AsyncChromiumLoader(url)
-    # html = loader.load()
-
-    # # To string
-    # bs_transformer = BeautifulSoupTransformer()
-    # docs_transformed = bs_transformer.transform_documents(html)
-    # content = docs_transformed[0].page_content
-
     ##pure beautiful soup
     response = requests.get(url)
 
