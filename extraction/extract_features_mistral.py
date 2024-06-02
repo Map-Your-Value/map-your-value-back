@@ -19,7 +19,7 @@ load_dotenv()
 ## Model init
 
 model = "mistral-large-latest"
-#TODO API KEY
+# TODO API KEY
 client = MistralClient(api_key="")
 
 ## Functions
@@ -97,9 +97,9 @@ def generate(url: str, one_page: bool = True) -> str:
     # response = json.loads(response)
     return response
 
-#TODO API KEY
+
 def correct_json(bad_json: str):
-    client = MistralClient(api_key="")
+    client = MistralClient(api_key=os.environ["MISTRAL_KEY"])
     prompt = f"""please correct the following json: {bad_json} 
             Use the keys:
             

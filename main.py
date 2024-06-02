@@ -21,6 +21,7 @@ class descriptionOfACompany(BaseModel):
 class rankCompetitorList(BaseModel):
     competitors: List[descriptionOfACompany]
 
+
 origins = [
     "*",
 ]
@@ -33,10 +34,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 # /POST /competitor
 @app.get("/competitor")
 def searchCompetitor(search: str):
-    out = analyse_company("https://tldv.io/")
+    out = analyse_company(search)
     competitors = []
     for i in out["competitors"]:
         competitors.append(
