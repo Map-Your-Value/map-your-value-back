@@ -6,7 +6,7 @@ from langchain_community.document_transformers import BeautifulSoupTransformer
 import os
 from mistralai.client import MistralClient
 from mistralai.models.chat_completion import ChatMessage
-from templates import JSON_TEMPLATE, PROMPT_MISTRAL
+from extraction.templates import JSON_TEMPLATE, PROMPT_MISTRAL
 import json
 from urllib.parse import urljoin, urlparse
 from bs4 import BeautifulSoup
@@ -19,8 +19,8 @@ load_dotenv()
 ## Model init
 
 model = "mistral-large-latest"
-
-client = MistralClient(api_key=os.environ["MISTRAL_KEY"])
+#TODO API KEY
+client = MistralClient(api_key="")
 
 ## Functions
 
@@ -97,9 +97,9 @@ def generate(url: str, one_page: bool = True) -> str:
     # response = json.loads(response)
     return response
 
-
+#TODO API KEY
 def correct_json(bad_json: str):
-    client = MistralClient(api_key=os.environ["MISTRAL_KEY"])
+    client = MistralClient(api_key="")
     prompt = f"""please correct the following json: {bad_json} 
             Use the keys:
             

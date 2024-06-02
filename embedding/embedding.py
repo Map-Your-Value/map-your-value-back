@@ -2,8 +2,9 @@ from mistralai.client import MistralClient
 from sklearn.metrics.pairwise import euclidean_distances
 
 model = "mistral-large-latest"
-#TODO replace with  APIKEY
-client = MistralClient(api_key="TYPE YOUR API KEY HERE")
+
+#TODO API KEY
+client = MistralClient(api_key="")
 
 def get_text_embedding(input):
     embeddings_batch_response = client.embeddings(

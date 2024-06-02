@@ -4,7 +4,7 @@ import json
 import vertexai
 from vertexai.generative_models import GenerativeModel, Part, FinishReason, Tool
 import vertexai.preview.generative_models as generative_models
-from templates import JSON_TEMPLATE, PROMPT_GEMINI
+from extraction.templates import JSON_TEMPLATE, PROMPT_GEMINI
 import requests
 from bs4 import BeautifulSoup
 
