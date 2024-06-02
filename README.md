@@ -8,7 +8,7 @@ poetry install
 
 If you don't have Poetry:
 ```
-pip install -m .
+pip install .
 ```
 
 Run the back end with the cmd below:
