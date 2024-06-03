@@ -14,9 +14,7 @@ load_dotenv()
 vertexai.init(project="shift-aihack-nantes24-1", location="us-central1")
 tools = [
     Tool.from_google_search_retrieval(
-        google_search_retrieval=generative_models.grounding.GoogleSearchRetrieval(
-            disable_attribution=False
-        )
+        google_search_retrieval=generative_models.grounding.GoogleSearchRetrieval(disable_attribution=False)
     ),
 ]
 model = GenerativeModel(
